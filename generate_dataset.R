@@ -2,8 +2,10 @@
 ### UNDERSTANDABLE BY MACHINE LEARNING ALGORITMS
 
 
-# Parameters of the dataset
-contextSize <- 3  # Window size = 2 x contextSize +1
+# Parameters 
+contextSize     <- 3  # Window size = 2 x contextSize +1
+englishAlphabet <- strsplit("abcdefghijklmnopqrstuvwxyz","")[[1]]
+nLetters        <- length(englishAlphabet)
 
 # Read the raw dataset
 rawDataset <- read.csv(file="/home/jeremias/Desktop/netTalk/rawDataset/nettalk.data", header=FALSE, sep="\t")
@@ -28,7 +30,8 @@ getContext <- function(word,len,i){
   return(ans)
 }
 
-# word :: String
+# Word == String
+# splitWord :: Word -> Matrix(Char)  
 splitWord <- function(word){ 
   len      <- nchar(word)
   ans      <- c()
@@ -36,8 +39,28 @@ splitWord <- function(word){
     newRow <- getContext(word,len,i)
     ans <-  rbind(ans,newRow)
   }
+  
+  ans <- strsplit(ans,"")   # SPlit strings in vectors of letters
+  ans <- do.call(rbind,ans) # Format it as a matrix of characters
+  
   return(ans)
 }
 
-englishAlphabet <- "abcdefghijklmnopqrstuvwxyz"
+encodeLetter <- function(letter){
+  nLetter <- which(englishAlphabet==letter)
+  ans     <- rep(0,nLetters)
+  ans[nLetter] <- 1
+  return(ans)
+}
+
+encodeWord   <-function(word){
+  rows        <- splitWord(word)
+  unformatted <- c(apply(rows,c(1,2),encodeLetter))
+  formatted   <- matrix(unformatted,ncol= nLetters*(1+2*contextSize),byrow=TRUE)
+  return(formatted)
+}
+
+
+
+
 
