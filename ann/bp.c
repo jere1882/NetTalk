@@ -4,7 +4,8 @@ Algoritmo: Backpropagation estocastico.
 Capa intermedia con unidades sigmoideas.
 Salidas con unidades lineales.
 
-PMG - Ultima revision: 18/02/2002
+ gcc bp.c -o bp -lm
+
 */
 
 #include <stdio.h>
@@ -458,6 +459,7 @@ float discrete_distance(float *float_prediction, float *v2){   //OK
 
 int closestPhonem(float *m, int verb){  //OK
 	// We assume that m is a prediction vector
+	verb = 0;
 	float minDis = 10000.0f;
 	int minIx=-1;
 	float temp;
@@ -476,11 +478,13 @@ int closestPhonem(float *m, int verb){  //OK
 		}
 		printf("\n");
 	}
+
 	for (i=0 ; i< PHONEMS ; i++){
 		temp = discrete_distance(m,afs[i]);
 		if (temp<minDis) { minDis = temp, minIx=i; }
 		if(verb) printf("cP: Considering %d, dis %f \n",i,temp);
 	}
+
 	if(verb) printf("cP: The closest phonem is %d \n",minIx);
 	return minIx;
 }
@@ -488,17 +492,17 @@ int closestPhonem(float *m, int verb){  //OK
 int getRealPhonem(float *m){
 	float target[N3];
 	int i;
-	printf("rP: The real phonem is: ");
+	//printf("rP: The real phonem is: ");
 	for (i=1 ; i<=N3 ; i++){
 		target[i-1]=m[i+N1];
-		printf("%f ",target[i-1]);
+	//	printf("%f ",target[i-1]);
 	}
 
 
 
-	printf("\n");
+	//printf("\n");
 	int ans = closestPhonem(target,0);
-	printf("rP: The real phonem is %d \n",ans);
+	//printf("rP: The real phonem is %d \n",ans);
 
 	return(ans);
 }
@@ -522,7 +526,7 @@ float propagar(float **S,int pat_ini,int pat_fin,int usar_seq){
     if(usar_seq) nu = seq[patron];
     else         nu = patron;
         
-    printf("Considering pattern %d of training \n",nu);
+    //printf("Considering pattern %d of training \n",nu);
     /*cargar el patron en X1*/
     for (i = 0; i <= N1; i ++) x1[i] = S[nu][i];
     
@@ -537,9 +541,9 @@ float propagar(float **S,int pat_ini,int pat_fin,int usar_seq){
     }   
 
 	// CALCULATE DISCRETE ERROR
-	int closest = closestPhonem(pred[nu]+1,1);
+	int closest = closestPhonem(pred[nu]+1,0);
 	int real    = getRealPhonem(S[nu]);
-	printf("Real %d closest %d \n",real,closest);
+	//printf("Real %d closest %d \n",real,closest);
 	if (real!=closest) discrete_error+=1.0f;
  
   }
@@ -672,18 +676,18 @@ int train(char *filename){
 
       printf("Propagando en Training \n");
 
-      //mse_train=propagar(data,0,PR,1);  // BIEN, PERO PARA MI DEBERIA DER LO MSIMO!
-      //disc_train=discrete_error;        // MAL CALCULADO, ACA DEBERIA METER DEDO Y HACER QUE SE CALCULE BIEN 
+      mse_train=propagar(data,0,PR,1);  // BIEN, PERO PARA MI DEBERIA DER LO MSIMO!
+      disc_train=discrete_error;        // 
 
       /*calcular mse de validacion; si no hay, usar mse_train*/
       
-     /*
+     
       if(PR==PTOT){
           mse_valid=mse_train;
           disc_valid=disc_train;
       }else{
           mse_valid=propagar(data,PR,PTOT,1);   // DEBERIA ESTAR BIEN CALCULADO...
-          disc_valid=discrete_error;            // MAL CALCULADO!
+          disc_valid=discrete_error;            //
       }
       //calcular mse de test (si hay)
       if (PTEST>0){
@@ -693,12 +697,12 @@ int train(char *filename){
       fprintf(ferror,"%f\t%f\t%f\t%f\t",mse,mse_train,mse_valid,mse_test);
       fprintf(ferror,"%f\t%f\t%f\n",disc_train,disc_valid,disc_test);
       if(CONTROL) fflush(NULL);
-      if(mse_valid<minimo_valid){
+      if(disc_valid<minimo_valid){
 		sinapsis_save(WTS+1);
-		minimo_valid=mse_valid;
+		minimo_valid=disc_valid;
 		epocas_del_minimo=iter;
       }
-      */
+      
     }
     if(CONTROL>2) {printf("Iteracion %d\n",iter);fflush(NULL);}
     
