@@ -86,7 +86,7 @@ El dataset netTalk contiene una fila por cada una de las 20000 palabras del \tex
 \begin{center}
 
 \begin{BVerbatim}
-[letter_representation]  [phonemic_representation]
+[written_representation] [phonemic_representation]
 argue                    argY-   
 argumentation            argYmxnteS-xn   
 argumentative            argYmEntxtIv-   
@@ -102,9 +102,9 @@ arithmetician            xrIT-mxtIS-xn
 
 \end{center}
 
-Ambas columnas son de tipo string, la primera columna obviamente sólo contiene caracteres del alfabeto inglés (abc..z), mientras que la segunda columna contiene caracteres que representan fonemas. El alfabeto elegido por los autores del paper original cuenta con 50 fonemas, incluyendo algunos fonemas extras utilizados en palabras extranjeras. Los 50 símbolos (fonemas) junto con ejemplos de palabras que utilizan cada uno de estos sonidos puede consultarse en netTalk.names (adjuntado).\\
+Ambas columnas son de tipo string, la primera columna sólo contiene caracteres del alfabeto inglés (abc..z), mientras que la segunda columna contiene caracteres que representan fonemas. El alfabeto elegido por los autores del paper original cuenta con 50 fonemas, incluyendo algunos fonemas extras utilizados en palabras extranjeras. Los 50 símbolos (fonemas) junto con ejemplos de palabras que utilizan cada uno de estos sonidos puede consultarse en netTalk.names (adjuntado).\\
 
-En el extracto presentado del dataset podemos ver que se ha forzado una correspondencia 1-1 entre letras de una palabra y fonemas de su transcripción: cada fonema de la traducción corresponde a la pronunciación de una de las letras de la palabra inglesa. Por ejemplo, la palabra "arithmetical": 
+En el extracto del dataset que he mostrado podemos ver que se ha forzado una correspondencia 1-1 entre letras de una palabra y fonemas de su transcripción: cada fonema corresponde al sonido producido por una de las letras de la palabra inglesa. Por ejemplo, la palabra "arithmetical": 
 
 \begin{center}
 
@@ -114,7 +114,7 @@ a>@ ; r>r ; i>I ; t>T ; h>- ; m>m ; e>E ; t>t; i>I ; c>k ; a>- ; l>l
 
 \end{center}
 
-Esta correspondencia es forzada, por que la cantidad de fonemas usados para pronunciar una palabra podria ser menor a la cantidad de letras de la palabra. Los autores del paper original incluyen un fonema "vacio", representado con el símbolo '-', para indicar la ausencia de sonido. Utilizando este simbolo, se obliga a que la transcripcion fonetica tenga la misma cantidad de caracteres que la palabra original, lo cual es computacionalmente conveniente -como veremos luego-
+Esta correspondencia es forzada, pues la cantidad de fonemas usados para pronunciar una palabra podria ser menor a la cantidad de letras de la palabra. Los autores del paper original incluyen un fonema "vacio", representado con el símbolo '-', para indicar la ausencia de sonido. Utilizando este simbolo, se obliga a que la transcripcion fonetica tenga la misma cantidad de caracteres que la palabra original, lo cual es computacionalmente conveniente.
 
 
 
@@ -122,14 +122,14 @@ Esta correspondencia es forzada, por que la cantidad de fonemas usados para pron
 
 Todos los métodos que hemos estudiado en Machine Learning y Data Mining requieren que los datos input estén  expresados como una matriz de números reales. El dataset netTalk que se acaba de introducir es una representación a muy alto nivel de la información que queremos utilizar, y por ello los autores del paper original realizaron una codificación y transformación bastante compleja para obtener datos numéricos con los que trabajar. \\
 
-Comencemos por definir claramente lo que queremos obtener. Deseamos hallar una función f que convierta strings con palabras en inglés, a strings con su correspondiente transcripción fonética:
+Comencemos por definir claramente el problema a tratar. Deseamos hallar una función f que convierta strings con palabras en inglés, a strings con su correspondiente transcripción fonética:
 
 \begin{align*}
   f \colon Words &\to Phonetics \\
   f("hypotenuse") &= "hApat-NYs-".
 \end{align*}
 
-Utilizando el hecho de que cada letra del input se corresponde a un fonema en el output, podemos reducir el problema a hallar el fonema correspondiente de una cierta letra de un palabra. Es decir, deseamos obtener una función que se focalice en predecir el fonema de una sóla de las letras a la vez, obviamente teniendo en cuenta el entorno de ella. Asumimos que para predecir el sonido de una letra, sólo necesitamos saber las 3 letras anteriores y las 3 siguientes (si las hay):
+Utilizando el hecho de que cada letra del input se corresponde a un fonema en el output, podemos reducir el problema a hallar el fonema correspondiente de cada letra. Es decir, deseamos obtener una función $g$ que se focalice en predecir el fonema de una sóla de las letras a la vez, obviamente teniendo en cuenta el entorno de ella. Asumimos que para predecir el sonido de una letra, sólo necesitamos saber las 3 letras anteriores y las 3 siguientes (si las hay):
 
 
 \begin{align*}
@@ -171,52 +171,58 @@ El primer paso es repetir los exprimentos que se realizaron usando redes neurona
 
 \subsection{Optimización de parámetros}
 
-En un primer experimento dividí aleatoriamente las 20000 palabras originales en 5000 palabras para training/validación y 15000 para testear. Ambos conjuntos fueron preprocesados como se indicó en la sección anterior, para poder entrenar y testear redes neuronales. \\
+En un primer experimento dividí aleatoriamente las 20000 palabras originales en 1000 palabras para training/validación y 19000 para testear. Ambos conjuntos fueron preprocesados como se indicó en la sección anterior. \\
 
-Los dos parámetros a optimizar, learning rate y momentum, fueron elegidos utilizando grid search. Realicé la búsqueda para $\mu$ y $\eta$ entre  $10^0 y 10^{-7}$ (49 combinaciones), y dado que entrenar cada red tarda un tiempo muy considerable y se deben realizar varias corridas, decidí utilizar sólo 20 neuronas en la capa intermedia para esta etapa de optimización de parámetros. \\
+Los dos parámetros a optimizar, learning rate ($\eta$) y momentum ($\mu$), fueron elegidos utilizando grid search. Realicé la búsqueda para $\mu$ y $\eta$ entre  $10^{-1} y 10^{-5}$ (25 combinaciones), y dado que entrenar cada red tarda un muy considerable y se deben realizar varias corridas, decidí utilizar sólo 20 neuronas en la capa intermedia para esta etapa de optimización de parámetros. \\
 
-Utilicé el algoritmo backpropagation, en particular la implementación en C que utilizamos en el curso de machine learning. Dividí el conjunto de 5000 palabras en 4000 para training y 1000 para validación. Una vez obtenida la salida de la red (.predict), discreticé el resultado y calculé el error discreto en test. Toda esta etapa precisó más de 50hs de cpu utilizando una procesador intel i7 con 8 cores. Los parámetros óptimos fueron e=0.1 y u=0.000001 y el código de toda esta sección puede verse en /src/ANNs
-
-\subsection{Complejidad de la red neuronal}
-Una vez seleccionados los parámetros óptimos, el siguiente paso fue entrenar redes de tamaño mucho más grande  y con muchas más épocas. Para cada configuración de red, se entrenaron varias redes y se eligió aquella que presentó el máximo error en test.  La siguiente tabla resume los resultados:
+Utilicé el algoritmo backpropagation, en particular la implementación en C que utilizamos en el curso de machine learning. Dividí el conjunto de 1000 palabras en 750 para training y 250 para validación. Los parámetros óptimos fueron $\mu$=0.0001 y $\eta$=0.01 y el código de toda esta sección puede verse en /src/ANNs
 
 \begin{center}
-\begin{tabular}{ |c| c|  }
+\begin{tabular}{ |c|c|c|c|c|c|  }
 \hline
-Neuronas en la capa intermedia & \% accuracy in test \\
+ & $\eta$ =.1 & $\eta$ =.01 & $\eta$ =.001 & $\eta$ =.0001 & $\eta$ =.00001 \\
 \hline 
-20  & 0.7525778  \\
-50  & 0.8457043  \\
-100 & 0.8548013  \\
-150 & 0.8457043  \\
+$\mu$ =.1     & 25.4  & 24.85 & 25.06 & 33.52 & 39.01 \\
+$\mu$ =.01    & 24.92 & 24.38 & 25.18 & 33.61 & 39.94 \\
+$\mu$ =.001   & 25.24 & 24.00 & 25.24 & 33.61 & 39.98 \\
+$\mu$ =.0001  & 25.26 & 23.99 & 25.26 & 33.60 & 39.98 \\
+$\mu$ =.00001 & 25.26 & 23.99 & 24.84 & 33.60 & 39.98 \\
+
 \hline
 \end{tabular}
 \end{center}
 
-
-Como vemos, usando una red con más de 50 neuronas podemos llegar a un accuracy realmente alto. Sin embargo, se aprecia que seguir agregando más neuronas no contribuye seguir mejorando el resultado. \\
-
-Me parece asombroso llegar a predecir con tanta exactitud los fonemas, dado que este problema es muy complejo y posee una gran cantidad de reglas y excepciones. Para aumentar aún más el valor de accuracy, puede ser interesante aplicar a la red la mejora de weight decay que estudiamos en machine learning, realizar un ajuste de parámetros más fino o ampliar la cantidad de neuronas de entrada (en vez de utilizar una ventana de 7 dígitos, utilizar más). En el paper original se alcanzan porcentajes similares, e incluso se llega superar el 90\% entrenando la red con más de 30000 épocas.\\
-
-\subsection{Tamaño del conjunto de entrenamiento}
-Un último experimento que me resultó interesante de realizar con redes neuronales es probar cuánto se puede aprender de la pronunciación del lenguaje inglés si utilizamos conjuntos más y más pequeños para entrenar. Los experimentos se realizaron con redes de 100 neuronas ocultas:
+\subsection{Resumen de resultados usando ANNs}
+Una vez seleccionados los parámetros óptimos, el siguiente paso fue entrenar redes con distintas cantidades de neuronas intermedias y con distintas cantidades de puntos en training. La siguiente grafica resume los resultados:
 
 
-\begin{center}
-\begin{tabular}{ |c|c|c|  }
-\hline
-Cardinal conjunto training & Número de palabras en training & \% accuracy in test \\
-\hline 
-30000 & 4500 & 0.8548013  \\
-5000  & 750  & 0.7921189 \\
-1000  & 150  & 0.6648153  \\
-\hline
-\end{tabular}
-\end{center}
 
-En la primera fila, el conjunto de training de 4500 palabras es codificado en 30000 filas, y la red neuronal de 100 neuronas ocultas realiza una predicción muy buena. \\
+\begin{figure}[h!]
+\centering
+\includegraphics[width=130mm]{annresults.jpg}
+\end{figure}
 
-Sin embargo, me resulta mucho más asombroso que las otras dos filas den resultados tan buenos. Con sólo 750 palabras del idioma somos capaces de predecir la pronunciación del resto del idioma con casi 80\% de precisión. Incluso con una pequeña muestra de la pronunciación inglesa (150 palabras) el resultado sigue siendo razonable.\\
+
+Algunas apreciaciones:
+
+\begin{itemize}
+\item Como vemos, usando una red con 20 o más neuronas podemos llegar a un accuracy realmente alto, donde más del 80\% de los fonemas son generados correctamente.
+\item El mejor error en test se obtiene con 5000 palabras en training y 100 neuronas, donde el 86.78\% de los fonemas son generados correctamente.
+\item A partir de 50 neuronas en adelante, continuar agregando más neuronas no mejora el resultado. Apartentemente no queda más información que pueda ser aprendida por una ANN llegado a ese punto, independientemente de la complejidad de la red.
+\item Similarmente, la ganancia de seguir agregando más palabras al dataset de entrenamiento se reduce cada vez más a medida que llegamos a unas 5000 palabras. 
+\end{itemize}
+
+El "estancamiento" en la reduccion del error descripto en los ultimos dos items probablemente se deba a:
+
+\begin{itemize}
+\item Hay irregularidades y excepciones del lenguaje que probablemente no puedan ser aprendidas de otra forma que memorizando los casos puntuales.
+\item Estamos usando una ventana de 7 caracteres para pronunciar, y probablemente hay palabras cuyos patrones de pronunciacion podrian ser aprendidos considerando una ventana mayor.
+\end{itemize}
+
+
+Me parece asombroso llegar a predecir con tanta exactitud los fonemas, dado que este problema es muy complejo y posee una gran cantidad de reglas y excepciones. En el paper original se alcanzan porcentajes similares, e incluso se llega superar el 90\% entrenando la red con más de 30000 épocas.\\
+
+Lo que mas me sorprende de estos resultados es que con sólo 200 palabras de ejemplo del idioma somos capaces de predecir la pronunciación del resto del idioma con casi 80\% de precisión. \\
 
 
 \subsection{Ejemplos y conclusión}
@@ -239,7 +245,7 @@ virus                   varxs                 vArxs
 
 Como se puede apreciar, la red se confunde en varios fonemas, pero los errores son muy similares a los que cometemos las personas, pues la confusión se da generalmente entre vocales con sonidos similares. \\
 
-Me interesaría mucho saber si este mismo procedimiento funcionaría para aprender cualquier idioma, provisto un dataset de palabras y sus transcripciones fonéticas.
+Me interesaría mucho probar si este mismo procedimiento funcionaría para aprender cualquier idioma, provisto un dataset de palabras y sus transcripciones fonéticas. 
 
 \section{Random Forest}
 
