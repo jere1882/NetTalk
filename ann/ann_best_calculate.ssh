@@ -1,0 +1,123 @@
+#!/bin/bash
+
+CreateNetFile200() {
+	echo 182      >> "$1/nettalk.net"  # neuronas de entrada
+	echo $2       >> "$1/nettalk.net"  # enuronas intermedias
+	echo 18       >> "$1/nettalk.net"  # neuronas de salida
+	echo 1487     >> "$1/nettalk.net"  # cantidad TOTAL de patrones en el archivo .data
+	echo 1085     >> "$1/nettalk.net"  # cantidad de patrones de ENTRENAMIENTO
+	echo 145275   >> "$1/nettalk.net"  # cantidad de patrones de test (archivo .test)
+	echo 5000     >> "$1/nettalk.net"  # Total de Iteraciones
+	echo 0.01     >> "$1/nettalk.net"  # learning rate
+	echo 0.0001   >> "$1/nettalk.net"  # Momentum 
+	echo 500      >> "$1/nettalk.net"  # graba error cada NERROR iteraciones
+	echo 0        >> "$1/nettalk.net"  # numero de archivo de sinapsis inicial
+	echo 0        >> "$1/nettalk.net"  # semilla para el rand()
+	echo 0        >> "$1/nettalk.net"  # verbosity
+}
+
+CreateNetFile1000() {
+	echo 182      >> "$1/nettalk.net"  # neuronas de entrada
+	echo $2       >> "$1/nettalk.net"  # enuronas intermedias
+	echo 18       >> "$1/nettalk.net"  # neuronas de salida
+	echo 7404     >> "$1/nettalk.net"  # cantidad TOTAL de patrones en el archivo .data
+	echo 5404     >> "$1/nettalk.net"  # cantidad de patrones de ENTRENAMIENTO
+	echo 139358   >> "$1/nettalk.net"  # cantidad de patrones de test (archivo .test)
+	echo 5000     >> "$1/nettalk.net"  # Total de Iteraciones
+	echo 0.01     >> "$1/nettalk.net"  # learning rate
+	echo 0.0001   >> "$1/nettalk.net"  # Momentum 
+	echo 500      >> "$1/nettalk.net"  # graba error cada NERROR iteraciones
+	echo 0        >> "$1/nettalk.net"  # numero de archivo de sinapsis inicial
+	echo 0        >> "$1/nettalk.net"  # semilla para el rand()
+	echo 0        >> "$1/nettalk.net"  # verbosity
+}
+
+CreateNetFile5000() {
+	echo 182      >> "$1/nettalk.net"  # neuronas de entrada
+	echo $2       >> "$1/nettalk.net"  # enuronas intermedias
+	echo 18       >> "$1/nettalk.net"  # neuronas de salida
+	echo 36657    >> "$1/nettalk.net"  # cantidad TOTAL de patrones en el archivo .data
+	echo 26722    >> "$1/nettalk.net"  # cantidad de patrones de ENTRENAMIENTO
+	echo 110105   >> "$1/nettalk.net"  # cantidad de patrones de test (archivo .test)
+	echo 5000     >> "$1/nettalk.net"  # Total de Iteraciones
+	echo 0.01     >> "$1/nettalk.net"  # learning rate
+	echo 0.0001   >> "$1/nettalk.net"  # Momentum 
+	echo 500      >> "$1/nettalk.net"  # graba error cada NERROR iteraciones
+	echo 0        >> "$1/nettalk.net"  # numero de archivo de sinapsis inicial
+	echo 0        >> "$1/nettalk.net"  # semilla para el rand()
+	echo 0        >> "$1/nettalk.net"  # verbosity
+}
+
+
+TrainConfiguration200(){
+		interm_neurons=$1
+		size=200
+		folder="final_results/s=$size&in=$1"
+		mkdir $folder
+		cp "../encodedDs/datasets/$size/nettalk.data" $folder
+		cp "../encodedDs/datasets/$size/nettalk.test"  $folder
+		CreateNetFile200 $folder $1
+		cp $original_bp  $folder
+        	cp $original_ph  $folder
+                cd $folder
+		#./bp nettalk > results.txt
+}
+
+TrainConfiguration1000(){
+		interm_neurons=$1
+		size=1000
+		folder="final_results/s=$size&in=$1"
+		mkdir $folder
+		cp "../encodedDs/datasets/$size/nettalk.data" $folder
+		cp "../encodedDs/datasets/$size/nettalk.test"  $folder
+		CreateNetFile1000 $folder $1
+		cp $original_bp  $folder
+        	cp $original_ph  $folder
+                cd $folder
+		#./bp nettalk > results.txt
+}
+
+TrainConfiguration5000(){
+		interm_neurons=$1
+		size=5000
+		folder="final_results/s=$size&in=$1"
+		mkdir $folder
+		cp "../encodedDs/datasets/$size/nettalk.data" $folder
+		cp "../encodedDs/datasets/$size/nettalk.test"  $folder
+		CreateNetFile5000 $folder $1
+		cp $original_bp  $folder
+        	cp $original_ph  $folder
+                cd $folder
+		#./bp nettalk > results.txt
+}
+
+rm -r final_results
+mkdir final_results
+                     
+original_bp=ann-impl/bp
+original_ph=ann-impl/phonems_stand.csv
+
+N=5
+
+for neurons in 1 10 20 50 100;
+do
+	echo "Working with test 200"
+	((i=i%N)); ((i++==0)) && wait
+	TrainConfiguration200 $neurons &
+done
+
+for neurons in 1 10 20 50 100;
+do
+	echo "Working with test 1000"
+	((i=i%N)); ((i++==0)) && wait
+	TrainConfiguration1000 $neurons &
+done
+
+for neurons in 1 10 20 50 100;
+do
+	echo "Working with test 5000"
+	((i=i%N)); ((i++==0)) && wait
+	TrainConfiguration5000 $neurons &
+done
+
+

@@ -1,0 +1,19 @@
+Index of files:
+
+rawDataset/                    (folder) [Original NetTalk dataset]
+
+encodedDs/                     (folder) [Encoded NetTalk dataset & code used to generate it]
+  |-> articulatoryFeatures/    (folder) Tables that store the encoded representation of phonems as articulatory features
+  |-> generate_dataset.R       (script) Preprocess original nettalk dataset, encode it as a matrix of numbers
+  |-> datasets                 (folder) Encoded NetTalk dataset (created using scripts/generate_dataset.R)
+
+ann/                           (folder) All code related to neural networks 
+  |-> ann_impl\                
+       |-> bp.c                         Modified version of the code used in Machine Learning course to train ANNs
+
+  |-> optimize_parameters.ssh  (script) Train several ANNs to find the best hyperparameters
+  |-> ann_best_calculate.ssh   (script) Calculate errors for different configurations (Using optimized hyperparameters)
+  |-> hyp_estimation_results\  (folder) Results after executing optimize_parameters.ssh
+  |-> final_results\           (folder) Results after executing ann_best_calculate.ssh
+
+Informe/                       (folder) .tex and resulting .pdf files

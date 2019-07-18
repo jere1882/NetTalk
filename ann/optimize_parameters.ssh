@@ -1,0 +1,54 @@
+#!/bin/bash
+
+CreateNetFile() {
+	echo 182      >> "$1/nettalk.net"  # neuronas de entrada
+	echo 20       >> "$1/nettalk.net"  # enuronas intermedias
+	echo 18       >> "$1/nettalk.net"  # neuronas de salida
+	echo 7404     >> "$1/nettalk.net"  # cantidad TOTAL de patrones en el archivo .data
+	echo 5404     >> "$1/nettalk.net"  # cantidad de patrones de ENTRENAMIENTO
+	echo 139358   >> "$1/nettalk.net"  # cantidad de patrones de test (archivo .test)
+	echo 5000     >> "$1/nettalk.net"  # Total de Iteraciones
+	echo $2       >> "$1/nettalk.net"  # learning rate
+	echo $3       >> "$1/nettalk.net"  # Momentum 
+	echo 500      >> "$1/nettalk.net"  # graba error cada NERROR iteraciones
+	echo 0        >> "$1/nettalk.net"  # numero de archivo de sinapsis inicial
+	echo 0        >> "$1/nettalk.net"  # semilla para el rand()
+	echo 0        >> "$1/nettalk.net"  # verbosity
+}
+
+
+TrainConfiguration(){
+		learning_rate=$1
+		momentum=$2
+		folder=hyp_estimation_results/lr=$learning_rate+m=$momentum 
+		mkdir $folder
+		cp $original_train $folder
+		cp $original_test  $folder
+		CreateNetFile $folder $learning_rate $momentum
+		cp $original_bp  $folder
+        	cp $original_ph  $folder
+                cd $folder
+		./bp nettalk > results.txt
+}
+
+rm -r hyp_estimation_results
+mkdir hyp_estimation_results
+
+
+original_train=../encodedDs/datasets/1000/nettalk.data         
+original_test=../encodedDs/datasets/1000/nettalk.test           
+original_bp=ann-impl/bp
+original_ph=ann-impl/phonems_stand.csv
+
+N=7
+
+for learning_rate in 0.1 0.01 0.001 0.0001 0.00001;
+do
+	for momentum in 0.1 0.01 0.001 0.0001 0.00001;
+	do
+		((i=i%N)); ((i++==0)) && wait
+		TrainConfiguration $learning_rate $momentum &
+	done
+done
+
+
