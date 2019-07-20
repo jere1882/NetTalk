@@ -252,9 +252,19 @@ Me interesaría mucho probar si este mismo procedimiento funcionaría para apren
 Utilizando el dataset codificado, con 5000 palabras codificadas en el conjunto de training, decidí aplicar el algoritmo random forest.\\
 Dado que hay 20 columnas binarias de output, entrené 20 clasificadores, cada uno especializado en predecir la columna i-ésima. \\
 Finalmente, combiné los resultados de los 20 clasificadores para generar las predicciones completas del conjunto de 15000 palabras test. El tiempo de entrenamiento fue similar al de redes neuronales, pues hubo que entrenar 20 clasificadores. Utilicé 500 árboles por ensemble.\\
+default p.
 
-
-
+\begin{center}
+\begin{tabular}{ |c|c|c|c|c|c|  }
+\hline
+Cantidad de palabras en train & RF Error discreto en test \% & SVM Error discreto en test  & GP Error discreto en test & Adaboost error discreto en test\\
+\hline 
+200     & 33.72  & 35.14  & 36.03 & \\
+1000    & 22.14  & -27.64 &    &\\
+5000    & 14.27  & -16.63 &  - & \\ 
+\hline
+\end{tabular}
+\end{center}
 
 
 
