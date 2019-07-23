@@ -47,6 +47,7 @@ for (idx in outputIndexes){
   for (cpix in 1:length(cp_values)){
     cp <- cp_values[cpix]
     for (six in 1:length(s_values)) {
+      cat(cpix,six,"\n")
       s <- s_values[six]
       mod <-ksvm(response_train~.,
                  cbind(temp_train,response_train),

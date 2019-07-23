@@ -2,7 +2,7 @@
 englishAlphabet <- strsplit("abcdefghijklmnopqrstuvwxyz","")[[1]]
 project_path      <- "/home/jeremiasrodriguez/Desktop/NetTalk/svm" #getwd()    
 art_features_path <- paste(project_path,"/../encodedDs/articulatoryFeatures/phonems.csv",sep="") 
-trainSize <- 200
+trainSize <- 1000
 
 testEncoded <- read.table(file = paste(project_path,"/../encodedDs/datasets/",toString(trainSize),"/nettalk.test",sep=""))
 prediction  <- read.csv(file=paste(project_path,"/predictions/",toString(trainSize),"/nettalk.predict",sep=""), header=FALSE, sep=" ")

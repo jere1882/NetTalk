@@ -1,28 +1,21 @@
+library(class)
 
 englishAlphabet <- strsplit("abcdefghijklmnopqrstuvwxyz","")[[1]]
-project_path      <- "/home/jeremiasrodriguez/Desktop/NetTalk/svm" #getwd()    
+project_path      <-  "~/Desktop/NetTalk/knn" #getwd() 
 art_features_path <- paste(project_path,"/../encodedDs/articulatoryFeatures/phonems.csv",sep="") 
-trainSize <- 200
 
-testEncoded <- read.table(file = paste(project_path,"/../encodedDs/datasets/",toString(trainSize),"/nettalk.test",sep=""))
-prediction  <- read.csv(file=paste(project_path,"/predictions/",toString(trainSize),"/nettalk.predict",sep=""), header=FALSE, sep=" ")
-valid_idexes <- as.matrix(read.csv(file = paste(project_path,"/predictions/",toString(trainSize),"/validIdx",sep=""),header = FALSE))
-  
-testEncoded <- testEncoded[-valid_idexes,]
-  
-### parameters for the encoding of the phonetics 
+center_inputs <- (52+1):(104+26)
 
-phonemicAlphabet <-  strsplit("abcdefghiklmnoprstuvwxyzACDEGIJKLMNOQRSTUWXYZ@!#*^-","")[[1]]
-nPhonems <- length(phonemicAlphabet)
-### Note: All words including the foreign phonem '+' have been manually removed from the raw dataset
+trainSize<-5000
 
-# Read the rmatrix that contains the encoding for every phonem in binary articulatory features
+cat("Iterating with train size",trainSize,"\n")
+inputIndexes <- 1:(length(englishAlphabet)*7)
+trainDs <- read.table(file = paste(project_path,"/../encodedDs/datasets/",toString(trainSize),"/nettalk.data",sep=""))
+testDs <- read.table(file = paste(project_path,"/../encodedDs/datasets/",toString(trainSize),"/nettalk.test",sep=""))
+
 articulatoryFeatures <- read.table(file=art_features_path, header=FALSE, sep=",")
-articulatoryFeatures[is.na(articulatoryFeatures)] <- 0
-articulatoryFeatures [which(phonemicAlphabet=='-'),] <- rep(0,dim(articulatoryFeatures)[2])
-articulatoryFeatures <- as.matrix(articulatoryFeatures)
 
-nFeatures <- dim(articulatoryFeatures)[2]
+outputIndexes <- (length(englishAlphabet)*7+1):(length(englishAlphabet)*7+length(articulatoryFeatures))
 
 
 ###########################################################################
@@ -88,13 +81,23 @@ closestPhonemRow <- function(row){
 }
 
 testIdx <- function(i){
-  #decodeRow(testEncoded[i,])
+  
+  center_bits <- testEncoded[i,center_inputs]
   actualPh <- getPhonemRow(testEncoded[i,])
-  #cat(actualPh,"<- real \n")
-  w <- closestPhonemRow(  prediction[i,]   )  
-  predicPh <- phonemicAlphabet[w]
-  #cat(predicPh,"<- predicted \n")
-  return (actualPh==predicPh)
+  
+  min_idx  <- which.min(rowSums(abs(sweep(as.matrix(trainDs[,center_inputs]),2,as.matrix(center_bits)))))
+  
+  #cat("Input is:\n")
+  #decodeRow(testEncoded[i,])
+  
+  
+  #w <- closestPhonemRow(  trainDs[min_idx,]   )  
+  #predicPh <- phonemicAlphabet[w]
+  #cat("actual Ph: ",actualPh," Its NN phoenm ",predicPh,"\n")
+  #decodeRow(trainDs[min_idx,])
+  #return (actualPh==predicPh)
+  return(sum(trainDs[min_idx,-(1:(inputSize*nLetters))]!=testEncoded[i,-(1:(inputSize*nLetters))] )==0)
+  
 }
 
 lenTest <- dim(testEncoded)[1]
@@ -108,6 +111,4 @@ calculateError <- function(){
   }
   return(hits);
 }
-
-n <- calculateError()
 

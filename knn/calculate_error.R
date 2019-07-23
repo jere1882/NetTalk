@@ -1,25 +1,25 @@
+library(class)
 
 englishAlphabet <- strsplit("abcdefghijklmnopqrstuvwxyz","")[[1]]
-project_path      <- "/home/jeremiasrodriguez/Desktop/NetTalk/gp" #getwd()    
+project_path      <-  "~/Desktop/NetTalk/knn" #getwd() 
 art_features_path <- paste(project_path,"/../encodedDs/articulatoryFeatures/phonems.csv",sep="") 
-trainSize <- 1000
 
-testEncoded <- read.table(file = paste(project_path,"/../encodedDs/datasets/",toString(trainSize),"/nettalk.test",sep=""))
-prediction  <- read.csv(file=paste(project_path,"/predictions/",toString(trainSize),"/nettalk.predict",sep=""), header=FALSE, sep=" ")
+center_inputs <- (78+1):(78+26)
 
-### parameters for the encoding of the phonetics 
+trainSize<-200
 
-phonemicAlphabet <-  strsplit("abcdefghiklmnoprstuvwxyzACDEGIJKLMNOQRSTUWXYZ@!#*^-","")[[1]]
-nPhonems <- length(phonemicAlphabet)
-### Note: All words including the foreign phonem '+' have been manually removed from the raw dataset
+cat("Iterating with train size",trainSize,"\n")
+inputIndexes <- 1:(length(englishAlphabet)*7)
+trainDs <- read.table(file = paste(project_path,"/../encodedDs/datasets/",toString(trainSize),"/nettalk.data",sep=""))
+testDs <- read.table(file = paste(project_path,"/../encodedDs/datasets/",toString(trainSize),"/nettalk.test",sep=""))
 
-# Read the rmatrix that contains the encoding for every phonem in binary articulatory features
 articulatoryFeatures <- read.table(file=art_features_path, header=FALSE, sep=",")
-articulatoryFeatures[is.na(articulatoryFeatures)] <- 0
-articulatoryFeatures [which(phonemicAlphabet=='-'),] <- rep(0,dim(articulatoryFeatures)[2])
-articulatoryFeatures <- as.matrix(articulatoryFeatures)
 
-nFeatures <- dim(articulatoryFeatures)[2]
+outputIndexes <- (length(englishAlphabet)*7+1):(length(englishAlphabet)*7+length(articulatoryFeatures))
+
+
+prediction <- matrix(NA,nrow=dim(testDs)[1],ncol=dim(testDs)[2])
+prediction[,inputIndexes] <- as.matrix(testDs[,inputIndexes])
 
 
 ###########################################################################
@@ -85,13 +85,22 @@ closestPhonemRow <- function(row){
 }
 
 testIdx <- function(i){
-  #decodeRow(testEncoded[i,])
-  actualPh <- getPhonemRow(testEncoded[i,])
-  #cat(actualPh,"<- real \n")
-  w <- closestPhonemRow(  prediction[i,]   )  
-  predicPh <- phonemicAlphabet[w]
-  #cat(predicPh,"<- predicted \n")
-  return (actualPh==predicPh)
+  
+  center_bits <- testEncoded[i,center_inputs]
+  #actualPh <- getPhonemRow(testEncoded[i,])
+  
+  for (ti in 1:dim(testEncoded)[1]){
+    
+    if (sum(center_bits!=trainDs[ti,center_inputs])==0){
+      #w <- closestPhonemRow(  trainDs[ti,]   )  
+      #predicPh <- phonemicAlphabet[w]
+      #cat("Input is ",decodeLetter(center_bits), " actual Ph: ",actualPh," Its NN phoenm ",predicPh,"\n")
+      #decodeRow(trainDs[ti,])
+      #return (actualPh==predicPh)
+      return(sum(trainDs[ti,-(1:(inputSize*nLetters))]!=testEncoded[i,-(1:(inputSize*nLetters))] )==0)
+    }
+      
+  }
 }
 
 lenTest <- dim(testEncoded)[1]
@@ -105,6 +114,4 @@ calculateError <- function(){
   }
   return(hits);
 }
-
-n <- calculateError()
 
