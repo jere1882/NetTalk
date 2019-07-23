@@ -171,7 +171,7 @@ El primer paso es repetir los exprimentos que se realizaron usando redes neurona
 
 \subsection{Optimización de parámetros}
 
-Para optimizar parametros se usaron 1000 de las 20000 palabras del dataset original; divididas en 750 training y 250 validacion. Realicé la búsqueda en grid search para learning rate ($\eta$) y momentum ($\mu$) entre  $10^{-1} y 10^{-5}$ (25 combinaciones). Utilicé el algoritmo backpropagation, en particular una version modificada del codigo en C que utilizamos en el curso de machine learning. Los parámetros óptimos fueron $\mu$=0.0001 y $\eta$=0.01 y el código de toda esta sección puede verse en /src/ANNs
+Para optimizar parámetros se usaron 1000 de las 20000 palabras del dataset original; divididas en 750 training y 250 validación. Realicé la búsqueda en grid search para learning rate ($\eta$) y momentum ($\mu$) entre  $10^{-1} y 10^{-5}$ (25 combinaciones). Utilicé el algoritmo backpropagation, en particular una versión modificada del codigo en C que utilizamos en el curso de machine learning. Los parámetros óptimos fueron $\mu$=0.0001 y $\eta$=0.01 y el código de toda esta sección puede verse en /src/ANNs
 
 \begin{comment}
 \begin{tabular}{ |c|c|c|c|c|c|  }
@@ -194,33 +194,31 @@ $\mu$ =.00001 & 25.26 & 23.99 & 24.84 & 33.60 & 39.98 \\
 \includegraphics[width=112mm]{annresults.jpg}
 \end{figure}
 
-Una vez seleccionados los parámetros óptimos, el siguiente paso fue entrenar redes con distintas cantidades de neuronas intermedias y con distintas cantidades de puntos en training, y los resultados pueden verse en la figura anterior. \\
+Una vez seleccionados los parámetros óptimos, el siguiente paso fue entrenar redes con distintas cantidades de neuronas intermedias y con distintas cantidades de puntos en training; y los resultados pueden verse en la figura anterior. \\
 
 Algunas apreciaciones:
 
 \begin{itemize}
-\item Como vemos, usando una red con 20 o más neuronas podemos llegar a un accuracy realmente alto, donde más del 80\% de los fonemas son generados correctamente.
+\item Como vemos, usando una red con 20 o más neuronas podemos llegar a un accuracy muy bueno, donde más del 80\% de los fonemas son generados correctamente.
 \item El mejor error en test se obtiene con 5000 palabras en training y 100 neuronas, donde el 86.78\% de los fonemas son generados correctamente.
-\item A partir de 50 neuronas en adelante, continuar agregando más neuronas no mejora el resultado. Apartentemente no queda más información que pueda ser aprendida por una ANN llegado a ese punto, independientemente de la complejidad de la red. (Para comprobar esto, entrene una red con 150 neuronas intermedias; y el error no mejoro aun entrenando con muchisimas epocas)
+\item A partir de 50 neuronas en adelante, continuar agregando más neuronas no mejora el resultado. Apartentemente no queda más información que pueda ser aprendida por una ANN llegado a ese punto, independientemente de la complejidad de la red. (Para comprobar esto, entrene una red con 150 neuronas intermedias; y el error no mejoró aún entrenando con muchísimas epocas)
 \item Similarmente, la ganancia de seguir agregando más palabras al dataset de entrenamiento se reduce cada vez más a medida que llegamos a unas 5000 palabras. 
 \end{itemize}
 
 El "estancamiento" en la reduccion del error (descripto en los ultimos dos items) probablemente se deba a que:
 
 \begin{itemize}
-\item Hay irregularidades y excepciones del lenguaje que probablemente no puedan ser aprendidas de otra forma que memorizando los casos puntuales.
-\item Estamos usando una ventana de 7 caracteres para pronunciar, y probablemente hay palabras cuyos patrones de pronunciacion podrian ser aprendidos considerando una ventana mayor.
+\item Hay irregularidades y excepciones del lenguaje que no puedan ser aprendidas de otra forma que memorizando los casos puntuales.
+\item Estamos usando una ventana de 7 caracteres para pronunciar, y probablemente hay palabras cuyos patrones de pronunciación podrían ser aprendidos considerando una ventana mayor.
 \end{itemize}
 
 
 Me parece asombroso llegar a predecir con tanta exactitud los fonemas, dado que este problema es muy complejo, altamente dimensional y posee una gran cantidad de reglas y excepciones. \\
 
-Lo que mas me sorprende de estos resultados es que con sólo 200 palabras de ejemplo del idioma somos capaces de predecir la pronunciación del resto del idioma con casi 80\% de precisión (habilidad que a un ser humano puede llevarle realmente mucho tiempo y ejemplos adquirir). \\
+Lo que más me sorprende de estos resultados es que con sólo 200 palabras de ejemplo del idioma somos capaces de predecir la pronunciación del resto del idioma con casi 80\% de precisión (habilidad que a un ser humano puede llevarle realmente mucho tiempo y muchos más ejemplos adquirir). \\
 
 
-\subsection{Ejemplos y conclusión}
-
-Esta tarea exhibe una gran cantidad de regularidades globales junto con reglas más especializadas y casos excepcionales. Los resultados fueron muy buenos y las redes aprendieron exitosamente a generar una pronunciación cercana a la real. Veamos algunos ejemplos:
+\subsection{Ejemplos de output}
 
 \begin{center}
 \begin{BVerbatim}
@@ -238,9 +236,9 @@ virus                   varxs                 vArxs
 
 Como se puede apreciar, la red se confunde en varios fonemas, pero los errores son muy similares a los que cometemos las personas, pues la confusión se da generalmente entre vocales con sonidos similares. \\
 \newpage
-\section{ Otros metodos de machine learning }
+\section{ Otros métodos de machine learning }
 
-Me interesa analizar ahora la performance de otros algoritmos que hemos estudiado en el curso, y compararla con los resultados vistos en la seccion anterior. Los metodos que decidi aplicar a este problema de clasificacion son Nearest Neighbor, Random Forest, SVM y Gaussian Processes. A continuacion los resultados, y luego comentarios de implementacion y conclusiones:
+Me interesa analizar ahora la performance de otros algoritmos que hemos estudiado en el curso, y compararla con los resultados vistos en la sección anterior. Los métodos que decidí aplicar a este problema de clasificación son Nearest Neighbor, Random Forest, SVM y Gaussian Processes. A continuación los resultados, y luego comentarios de implementación y conclusiones:
 
 \begin{center}
 \begin{figure}[h!]
@@ -250,22 +248,21 @@ Me interesa analizar ahora la performance de otros algoritmos que hemos estudiad
 
 
 \begin{itemize}
-\item \textbf{Nearest Neighbor}: Decidi usar este metodo simple para obtener un "baseline" del error, calculando Nearest Neighbor usando solo la letra central. Por ejemplo, si deseamos predecir el fonema generado por el input (y,p,o,\textcolor{red}{t},e,n,u), se descartan las columnas de contexto y simplemente se busca en el dataset de training otro input donde la letra a predecir sea tambien \textcolor{red}{t}. Encontrado este nearest neighbor en train (por ejemplo, (w,a,n,\textcolor{red}{t},-,-,-) , se retorna el fonema asociado \textcolor{red}{t}.
+\item \textbf{Nearest Neighbor}: Decidí usar este método simple para obtener un "baseline" del error, calculando Nearest Neighbor usando sólo la letra central. Por ejemplo, si deseamos predecir el fonema generado por el input (y,p,o,\textcolor{red}{t},e,n,u), se descartan las columnas de contexto y simplemente se busca en el dataset de training otro input donde la letra a predecir sea tambien \textcolor{red}{t}. Encontrado este nearest neighbor en train (por ejemplo, (w,a,n,\textcolor{red}{t},-,-,-) , se retorna el fonema asociado \textcolor{red}{t}.
 
-Como era de esperar, aproximadamente la mitad de los fonemas son predichos correctamente. Estos fonemas corresponden principalmente a consonantes cuya pronunciacion es generalmente la misma. Este metodo tiene la gran desventaja de que, ademas, el tiempo de prediccion es muy alto pues hay que recorrer todo el dataset.
+Como era de esperar, aproximadamente la mitad de los fonemas son predichos correctamente. Estos fonemas corresponden principalmente a consonantes cuya pronunciacion es generalmente constante. Este método tiene la gran desventaja de qué el tiempo de predicción es muy alto pues hay que recorrer todo el dataset.
 
-Vemos que al quintuplicar el tamanyo del dataset de train (1000 a 5000), no se ve un gran incremento en la reduccion del error. Mi hipotesis es que esto sucede porque este metodo es incapaz de hacer algun aprendizaje real, solo busca silabas similares, y esta forma de operar es muy limitada. Pronunciaciones de vocales que sigan patrones mas sofisticados, o fonemas que requieran de un contexto mayor, no seran predichos correctamente.
-
-\item \textbf{Nearest Neighbor silaba}:Similar al anterior. En este caso, si deseamos predecir el fonema generado por el input (y,p,o,\textcolor{red}{t},e,n,u), buscamos el nearest neighbor en train usando las tres columnas centrales (o,\textcolor{red}{t},e). De esta forma, se busca una silaba en train que sea parecida a la silaba que queremos predecir. Me sorprendio descubrir que el error obtenido por este metodo rivaliza a los otros metodos, siendo los demas mucho mas sofisticados. El salto de accuracy entre NN y NN-silabico demuestra la importancia de tener en cuenta el contexto de una letra a la hora de generar su fonema.
+\item \textbf{Nearest Neighbor sílaba}:Similar al anterior. En este caso, si deseamos predecir el fonema generado por el input (y,p,o,\textcolor{red}{t},e,n,u), buscamos el nearest neighbor en train usando las tres columnas centrales (o,\textcolor{red}{t},e). De esta forma, se busca una sílaba en train que sea parecida a la sílaba que queremos predecir. Me sorprendió descubrir que el error obtenido por este método rivaliza a los otros metodos, siendo los demas mucho más sofisticados. El salto de accuracy entre NN y NN-silabico demuestra la importancia de tener en cuenta el contexto de una letra a la hora de generar su fonema.
 
 La principal desventaja de este approach es el tiempo que se tarda para realizar una prediccion, lo cual lo hace inadecuado para aplicaciones que generen sonidos en tiempo real.
 
+Además vemos que al quintuplicar el tamanyo del dataset de train (1000 a 5000), no se ve un gran incremento en la reducción del error. Mi hipótesis es que esto sucede porque este método es incapaz de hacer algún aprendizaje real o inteligente, sólo busca sílabas similares, y esta forma de operar no permite descubrir conexiones mas complejas entre inputs y outputs. Pronunciaciones de vocales que sigan patrones mas sofisticados, o fonemas que requieran de un contexto mayor, no serán predichos correctamente.
 
 \item \textbf{Random Forest}: Dado que hay 18 columnas binarias de output, entrené 18 clasificadores RF, cada uno especializado en predecir la columna de output i-ésima. Utilicé 500 árboles por ensemble.
 
-En mi opinion este es el mejor metodo de los que he experimentado. Si bien ANN con 50 neuronas es un poco mas preciso, el tiempo consumido para entrenar los 20 clasificadores random forest es menor que el de entrenar la red neuronal. Ademas, RF fue extremadamente sencillo de usar, pues no requirio optimizar hiperparametros.
+En mi opinion este es el mejor método de los que he experimentado. Si bien ANN con 50 neuronas es un poco mas preciso, el tiempo consumido para entrenar los 20 clasificadores random forest es menor que el de entrenar la red neuronal. Ademas, RF fue extremadamente sencillo de usar, pues no requirió optimizar hiperparámetros.
 
-Cada nodo en cada arbol de decision supongo que significara una regla especial para una determinada letra, dado que cada input tiene valor 0 o 1 (no hay mas variacion que esa). Por lo tanto, cuando los arboles de decision intenten hacer "cortes", representaran decisiones a tomar de acuerdo a particulares letras del input.
+Cada nodo en cada árbol de decisión supongo que significará una regla especial para una determinada letra, dado que cada input tiene valor 0 o 1 (no hay mas variacion que esa). Por lo tanto, cuando los arboles de decision intenten hacer "cortes", representaran decisiones a tomar de acuerdo a particulares letras del input.
 
 \item \textbf{SVM}: Al igual que con RF, entrene 18 clasificadores, cada uno especializado en predecir la columna de output i-ésima. Use un kernel Gaussiano, lo cual involucra la dificultad extra de optimizar parametros. Para cada una de las 18 columnas, optimice $C$ y $\sigma$ en grid search.
 
