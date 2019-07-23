@@ -237,30 +237,10 @@ virus                   varxs                 vArxs
 
 
 Como se puede apreciar, la red se confunde en varios fonemas, pero los errores son muy similares a los que cometemos las personas, pues la confusión se da generalmente entre vocales con sonidos similares. \\
-
-Me interesaría mucho probar si este mismo procedimiento funcionaría para aprender cualquier idioma, provisto un dataset de palabras y sus transcripciones fonéticas.
-
+\newpage
 \section{ Otros metodos de machine learning }
 
-Me interesa analizar ahora la performance de otros algoritmos que hemos estudiado en el curso, y compararla con los resultados vistos en la seccion anterior. Los metodos que decidi aplicar a este problema de clasificacion son:
-
-\begin{itemize}
-\item \textbf{Nearest Neighbor}: Decidi usar este metodo tan simple para obtener un "baseline" del error. En este caso, si deseamos predecir el fonema generado por el input (y,p,o,\textcolor{red}{t},e,n,u), se descartan las columnas de contexto y simplemente se busca en el dataset de training otro input donde la letra a predecir sea tambien \textcolor{red}{t}. Encontrado este nearest neighbor en train, se retorna el fonema asociado.
-
-\item \textbf{Nearest Neighbor silaba}:Similar al anterior. En este caso, si deseamos predecir el fonema generado por el input (y,p,o,\textcolor{red}{t},e,n,u), buscamos el nearest neighbor en train usando las tres columnas centrales (o,\textcolor{red}{t},e). 
-
-\item \textbf{Random Forest}: Dado que hay 18 columnas binarias de output, entrené 18 clasificadores RF, cada uno especializado en predecir la columna de output i-ésima. Utilicé 500 árboles por ensemble.
-
-\item \textbf{SVM}: Al igual que con RF, entrene 18 clasificadores, cada uno especializado en predecir la columna de output i-ésima. Use un kernel Gaussiano, lo cual involucra la dificultad extra de optimizar parametros. Para cada una de las 18 columnas, optimice $C$ y $\sigma$ en grid search.
-
-\item \textbf{Gaussian Processes}: Si bien no estudiamos este metodo en el curso, me parecio interesante incluirlo(add reference). Al igual que para SVM y RF, tuve que entrenar un clasificador por columna. El kernel usado es  Gaussiano, aunque la optimizacion de parametros es realizada automaticamente por kernlab.
-
-\end{itemize}
-
-Para cada uno de estos 5 metodos, repeti los calculos usando datasets de entrenamiento de distinto tamanyo: 200, 1000 y 5000 palabras. Las restantes (19800, 19000 y 15000 respectivamente) fueron usadas para calcular el error discreto en la prediccion de cada fonema.
-
-
-\newpage
+Me interesa analizar ahora la performance de otros algoritmos que hemos estudiado en el curso, y compararla con los resultados vistos en la seccion anterior. Los metodos que decidi aplicar a este problema de clasificacion son Nearest Neighbor, Random Forest, SVM y Gaussian Processes. A continuacion los resultados, y luego comentarios de implementacion y conclusiones:
 
 \begin{center}
 \begin{figure}[h!]
@@ -268,16 +248,103 @@ Para cada uno de estos 5 metodos, repeti los calculos usando datasets de entrena
 \end{figure}
 \end{center}
 
-*porque ANNS son mas suitable
-*cositas extra de c/metodo
 
-anexo 1: tabla
+\begin{itemize}
+\item \textbf{Nearest Neighbor}: Decidi usar este metodo simple para obtener un "baseline" del error, calculando Nearest Neighbor usando solo la letra central. Por ejemplo, si deseamos predecir el fonema generado por el input (y,p,o,\textcolor{red}{t},e,n,u), se descartan las columnas de contexto y simplemente se busca en el dataset de training otro input donde la letra a predecir sea tambien \textcolor{red}{t}. Encontrado este nearest neighbor en train (por ejemplo, (w,a,n,\textcolor{red}{t},-,-,-) , se retorna el fonema asociado \textcolor{red}{t}.
+
+Como era de esperar, aproximadamente la mitad de los fonemas son predichos correctamente. Estos fonemas corresponden principalmente a consonantes cuya pronunciacion es generalmente la misma. Este metodo tiene la gran desventaja de que, ademas, el tiempo de prediccion es muy alto pues hay que recorrer todo el dataset.
+
+Vemos que al quintuplicar el tamanyo del dataset de train (1000 a 5000), no se ve un gran incremento en la reduccion del error. Mi hipotesis es que esto sucede porque este metodo es incapaz de hacer algun aprendizaje real, solo busca silabas similares, y esta forma de operar es muy limitada. Pronunciaciones de vocales que sigan patrones mas sofisticados, o fonemas que requieran de un contexto mayor, no seran predichos correctamente.
+
+\item \textbf{Nearest Neighbor silaba}:Similar al anterior. En este caso, si deseamos predecir el fonema generado por el input (y,p,o,\textcolor{red}{t},e,n,u), buscamos el nearest neighbor en train usando las tres columnas centrales (o,\textcolor{red}{t},e). De esta forma, se busca una silaba en train que sea parecida a la silaba que queremos predecir. Me sorprendio descubrir que el error obtenido por este metodo rivaliza a los otros metodos, siendo los demas mucho mas sofisticados. El salto de accuracy entre NN y NN-silabico demuestra la importancia de tener en cuenta el contexto de una letra a la hora de generar su fonema.
+
+La principal desventaja de este approach es el tiempo que se tarda para realizar una prediccion, lo cual lo hace inadecuado para aplicaciones que generen sonidos en tiempo real.
+
+
+\item \textbf{Random Forest}: Dado que hay 18 columnas binarias de output, entrené 18 clasificadores RF, cada uno especializado en predecir la columna de output i-ésima. Utilicé 500 árboles por ensemble.
+
+En mi opinion este es el mejor metodo de los que he experimentado. Si bien ANN con 50 neuronas es un poco mas preciso, el tiempo consumido para entrenar los 20 clasificadores random forest es menor que el de entrenar la red neuronal. Ademas, RF fue extremadamente sencillo de usar, pues no requirio optimizar hiperparametros.
+
+Cada nodo en cada arbol de decision supongo que significara una regla especial para una determinada letra, dado que cada input tiene valor 0 o 1 (no hay mas variacion que esa). Por lo tanto, cuando los arboles de decision intenten hacer "cortes", representaran decisiones a tomar de acuerdo a particulares letras del input.
+
+\item \textbf{SVM}: Al igual que con RF, entrene 18 clasificadores, cada uno especializado en predecir la columna de output i-ésima. Use un kernel Gaussiano, lo cual involucra la dificultad extra de optimizar parametros. Para cada una de las 18 columnas, optimice $C$ y $\sigma$ en grid search.
+
+El problema es altamente dimensional y no linear, por lo que la posibilidad de usar el kernel trick es muy valiosa. Optimizar los parametros a medida que el dataset crece se vuelve muy costoso computacionalmente, pero se reflejo en mejoras de aproximadamente 5\%.
+
+\item \textbf{Gaussian Processes}: Si bien no estudiamos este metodo en el curso, me parecio interesante incluirlo\cite{gauss_processes}. Al igual que para SVM y RF, este metodo sirve para clasificacion y regresion. Tuve que entrenar un clasificador por columna. 
+
+Otra similitud de este metodo con SVM es la posibilidad de aplica el kernel trick. El kernel usado es  Gaussiano, aunque la optimizacion de parametros es realizada automaticamente por kernlab.
+
+Una ventaja de este metodo es que cada prediccion tiene una varianza asociada, que nos permite medir cuan confiable es la prediccion. Otra ventaja es que los hiperparametros del kernel pueden ser aprendidos maximizando un likelihood, a diferencia de SVM.
+
+Sin embargo, este metodo probo no ser nada adecuado para este problema. En primer lugar, dado que se necesita mantener una matriz de $n^2$ puntos en memoria donde n es el valor de training, el consumo de memoria resulto tan prohibitivo que no pude realizar los calculos para n~40000 (5000 palabras). Una de las principales ventajas de GPs es que son muy buenos interpolando datos continuos en areas donde no hay mucha informacion, pero esta ventaja no es aprovechada en este problema.
+
+\item \textbf{ANNs} Las redes neuronales dieron los mejores resultados. Esta tarea de aprendizaje complejo, en donde el output es claramente una funcion no linear de los inputs, es adecuada para la potencia de redes neuronales. Las redes se benefician de que tenemos una gran cantidad de datos de entrenamiento, y el uso de un conjunto de validacion es muy util para evitar overfitting. A diferencia de los otros metodos, hubo que entrenar una sola red con 18 outputs; mientras que todos los demas clasificadores (excepto KNN) requirieron entrenar 18 clasificadores diferentes.
+
+\end{itemize}
+
+\section{ Importancia de variables }
+
+No pude aplicar tecnicas de clustering/reduccion de la dimensionalidad debido a que no tienen sentido para la codificacion numerica del dataset. Sin embargo, dado que Random Forest es uno de los algoritmos que dio mejores resultados, me resulto interesante aprovechar su capacidad de asignar una importancia a los inputs. \\
+
+Para hacer este pequenyo experimento, use el dataset de training mas pequenyo (200 palabras) y entrene 18 clasificadores RF (uno por cada feature del output, ver anexo 1). \\
+
+Luego, para cada output, consulte cuales eran las 26 columnas input mas importantes de acuerdo a random forest. Como es de esperar, de las variables mas importantes a la hora de generar fonemas, la mayoria pertenecen a las 26 columnas que codifican la letra central. \\
+
+En promedio, si tomamos las 26 variables mas imporantes para RF, el 51.25\% de ellas es uno de los inputs codificando la letra central. Ademas, el 82.91\% de las 26 variables mas importantes pertenece a los inputs que codifican las tres letras centrales. Esto se debe a que, naturalmente, las letras mas importantes para generar un fonema son las mas cercanas a la letra central. \\ 
+
+Ademas, pude observar otras regularidades mirando outputs singulares. Tomemos por ejemplo la columna de output 8, que singifica "fonema nasal" (el fonema predicho tendra un sonido nasal). Sabemos, por la tabla del anexo 1, que los fonemas asociados a sonidos nasales son "m", "n", "G","J","M","N". Letras que usualmente generan estos sonidos son "m" y "n". \\
+
+De acuerdo a random forest, las cinco variables input mas importantes para detectar si un fonema es nasal son:
+
+\begin{center}
+[1]  92  91  83  85  87
+\end{center}
+
+Que corresponden a las letras n, m, e, g, i. Esto nos demuestra que random forest es suficientemente inteligente para descubrir estas conexiones entre letras del input generando particulares outputss.
+
+
+
+\section{ Reflexion final }
+
+Los distintos metodos de machine learning que estudiamos en estos dos cursos dieron resultados muy buenos en este problema, con errores bastante similares. En el caso particular de lenguaje Ingles, la aplicacion practica de estos metodos puede no ser muy amplia dado que es un lenguaje extensamente estudidado y probablemente un sistema con reglas pueda tener mayor performance. \\
+
+Sin embargo, imagino que este mismo procedimiento funcionaría para aprender cualquier idioma, provisto un dataset de palabras y sus transcripciones fonéticas. Esto es muy interesante, porque partiendo de una pequenya muestra de palabras, podriamos aproximar bastante bien la pronunciacion del lenguaje. \\
+
+Otra posible aplicacion que se me ocurre es en el estudio de lenguajes antiguos o semi-extinguidos. Si solo se conoce la pronunciacion de un subconjunto de palabras del lenguaje, podria ser posible aplicar estos metodos para predecir como seria la pronunciacion del lenguaje completo.
+
+\newpage
+
+\section { Anexo I: Articulatory Features}
+
+
+\begin{center}
+\begin{figure}[h!]
+\centering
+\includegraphics[width=100mm]{art_features.jpg}
+\end{figure}
+\end{center}
+
+\begin{center}
+\begin{figure}[h!]
+\centering
+
+\includegraphics[width=100mm]{art_features2.jpg}
+\end{figure}
+\end{center}
+
+
+
 \begin{thebibliography}{9}
 \bibitem{parallel} 
 Terrence J. Sejnowski and Charles R. Rosenberg
 \textit{Parallel Networks that Learn to Pronounce English Text}. 
 Complex Systems 1 (1987)
- 
+
+\bibitem{gauss_processes} 
+Book by Carl Edward Rasmussen and Christopher K. I. Williams\textit{ Gaussian Processes for Machine Learning}. 
+
+
 
 \end{thebibliography}
 
