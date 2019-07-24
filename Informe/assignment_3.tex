@@ -1,4 +1,3 @@
-
 %----------------------------------------------------------------------------------------
 %   PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
 %----------------------------------------------------------------------------------------
@@ -63,7 +62,7 @@
 
 \section{Introducción}
 
-\par La pronunciación del lenguaje inglés ha sido estudiada extensivamente por linguistas, y mucho es sabido sobre las correspondencias entre letras y los sonidos del habla inglesa, llamados \emph{fonemas}.  El inglés es un lenguaje particularmente difícil de dominar por sus irregularidades en la pronunciación. Por ejemplo, la letra "a" en la palabra "gave" es una vocal larga,  pero no en "have" o "read".\\
+\par La pronunciación del lenguaje inglés ha sido estudiada extensivamente por lingüistas, y mucho es sabido sobre las correspondencias entre letras y los sonidos del habla inglesa, llamados \emph{fonemas}.  El inglés es un lenguaje particularmente difícil de dominar por sus irregularidades en la pronunciación. Por ejemplo, la letra "a" en la palabra "gave" es una vocal larga,  pero no en "have" o "read".\\
 \par En este trabajo se busca aplicar varios de los contenidos estudiados en este curso (y el anterior) al problema de convertir texto en inglés a su correspondiente transcripción en fonemas\footnote{El Alfabeto Fonético Internacional es un sistema de notación fonética creado por lingüistas. Su propósito es otorgar, de forma regularizada, precisa y única, la representación de los sonidos de cualquier lenguaje oral. Tiene aproximadamente 107 símbolos básicos, y cada idioma hace uso de un subconjunto particular.}. \\
 
 \begin{figure}[h!]
@@ -73,7 +72,7 @@
 \label{fig:method}
 \end{figure}
 
-\par El dataset utilizado se llama netTalk\footnote{\url{https://archive.ics.uci.edu/ml/datasets/Connectionist+Bench+(Nettalk+Corpus)}}, fue usado por primera vez en el paper  "Parallel Networks that Learn to Pronounce English Text"\cite{parallel}. Los autores entrenaron redes neuronales que convierten strings de texto en inglés (e.g. \textit{calculator}) en strings de fonemas ( $k \ae lkj \omega leIt  \textschwa $).\\
+\par El dataset utilizado se llama netTalk\footnote{\url{https://archive.ics.uci.edu/ml/datasets/Connectionist+Bench+(Nettalk+Corpus)}}, fue usado por primera vez en el paper  "Parallel Networks that Learn to Pronounce English Text"\cite{parallel}. Los autores entrenaron redes neuronales capaces de convertir strings de texto en inglés (e.g. \textit{calculator}) en strings de fonemas ( $k \ae lkj \omega leIt  \textschwa $).\\
     
 
 \par En este trabajo recrearé y analizaré varios experimentos llevados a cabo en el citado paper (con ANNs). Posteriormente aplicaré otros clasificadores (Random Forest, Gaussian Process, SVM y KNN) y compararé resultados.
@@ -102,7 +101,7 @@ arithmetician            xrIT-mxtIS-xn
 
 \end{center}
 
-Ambas columnas son de tipo string, la primera columna sólo contiene caracteres del alfabeto inglés (abc..z), mientras que la segunda columna contiene caracteres que representan fonemas. Los autores del paper original eligieron un conjunto de 51 fonemas. (ver rawDs/netTalk.names para mas detalle).\\
+Ambas columnas son de tipo string, la primera columna sólo contiene caracteres del alfabeto inglés (abc..z), mientras que la segunda columna contiene caracteres que representan fonemas. Los autores del paper original eligieron un conjunto de 51 fonemas. (ver rawDataset/netTalk.names para mas detalle).\\
 
 En el extracto del dataset que he mostrado podemos ver que se ha forzado una correspondencia 1-1 entre letras de la primera columna y fonemas de la segunda: cada fonema corresponde al sonido producido por una de las letras . Por ejemplo, la palabra "arithmetical": 
 
@@ -114,13 +113,13 @@ a>@ ; r>r ; i>I ; t>T ; h>- ; m>m ; e>E ; t>t; i>I ; c>k ; a>- ; l>l
 
 \end{center}
 
-Los autores del paper original incluyen un fonema "vacío", representado con el símbolo '-', para indicar la ausencia de sonido. Utilizando este simbolo, se completa las transcripciones foneticas para que tengan la misma cantidad de caracteres que la palabra original (lo cual es computacionalmente conveniente).
+Los autores del paper original incluyen un fonema "vacío", representado con el símbolo '-', para indicar la ausencia de sonido. Utilizando este simbolo, se rellena las transcripciones foneticas para que tengan la misma cantidad de caracteres que la palabra original (lo cual es computacionalmente conveniente).
 
 
 
 \subsection{Preprocesamiento}
 
-Todos los métodos que hemos estudiado en Machine Learning y Data Mining requieren que los datos input estén expresados como una matriz numerica. El dataset netTalk que se acaba de introducir es una representación a muy alto nivel de la información que queremos utilizar, y por ello los autores del paper original realizaron una codificación y transformación bastante compleja para obtener datos numéricos con los que trabajar. \\
+Todos los métodos que hemos estudiado en Machine Learning y Data Mining requieren que los datos input estén expresados como una matriz numérica. El dataset netTalk que se acaba de introducir es una representación a muy alto nivel de la información que queremos utilizar, y por ello los autores del paper original realizaron una codificación y transformación bastante compleja para obtener datos numéricos con los que trabajar. \\
 
 Comencemos por definir claramente el problema a tratar. Deseamos hallar una función f que convierta strings con palabras en inglés, a strings con su correspondiente transcripción fonética:
 
@@ -129,7 +128,7 @@ Comencemos por definir claramente el problema a tratar. Deseamos hallar una func
   f("hypotenuse") &= "hApat-NYs-".
 \end{align*}
 
-Utilizando el hecho de que cada letra del input se corresponde a un fonema en el output, podemos reducir el problema a hallar el fonema correspondiente de cada letra. Es decir, deseamos obtener una función $g$ que se focalice en predecir el fonema de una sóla de las letras a la vez, obviamente teniendo en cuenta el entorno de ella. Asumimos que para predecir el sonido de una letra, sólo necesitamos saber las 3 letras anteriores, la letra misma y las 3 siguientes (si las hay):
+Utilizando el hecho de que cada letra del input se corresponde a un fonema en el output, podemos reducir el problema a hallar el fonema correspondiente de cada letra. Es decir, deseamos obtener una función $g$ que se focalice en predecir el fonema de una sola de las letras a la vez, obviamente teniendo en cuenta el entorno de ella. Asumimos que para predecir el sonido de una letra, sólo necesitamos saber las 3 letras anteriores, la letra misma y las 3 siguientes (si las hay):
 
 
 \begin{align*}
@@ -152,22 +151,21 @@ Por supuesto, esta ventana de 7 letras puede no ser suficiente para algunas pala
 \end{align*}
 
 
-Qué ventajas tiene g respecto a f? Al tener un input fijo de 7 caracteres y un output fijo de 1 fonema; podemos aplicar los algoritmos de machine learning que hemos estudiado (tener inputs/outputs de longitud variable complicaria el problema) . Ademas, aprender la función g es sustancialmente más fácil porque sólo se predice un caracter a la vez. \\
+Qué ventajas tiene g respecto a f? Al tener un input fijo de 7 caracteres y un output fijo de 1 fonema; podemos aplicar los algoritmos de machine learning que hemos estudiado (tener inputs/outputs de longitud variable complicaria el problema). Además, aprender la función g es sustancialmente más fácil porque sólo se predice un caracter a la vez. \\
 
 Por lo tanto, se convirtió el dataset netTalk a un nuevo dataset de 8 columas, donde dividimos cada palabra en varias filas como se ilustró arriba con "hypotenuse". En nuestro caso, de tener 10000 palabras pasamos a tener 146934 filas. Los scripts utilizados en esta fase pueden verse en /src/encodedDs. \\
 
-El paso restante es codificar todos los caracteres (letras y fonemas) de las 146934 filas como números. Para codificar las \textbf{letras del input} usaremos una representación muy simple: Dado que tenemos 26 letras en el alfabeto inglés, cada letra por 26 columnas binarias 1-0. Si la primera letra era una 'j', entonces la columna 10 tendrá un 1 y las otras 25 columnas un cero. Los \textbf{fonemas output}, por otra parte, se codificarán en 20 columnas binarias (ver anexo I).\footnote{Los 50 fonemas se codifican en 18 columnas que representan "articulatory features" que los definen, como por ejemplo si tienen un tono alto, medio o bajo; si el ruido procede de la garganta, del paladar, etc; o si el ruido es con o sin voz.} \\
+El paso restante es codificar todos los caracteres (letras y fonemas) de las 146934 filas como números. Para codificar las \textbf{letras del input} usaremos una representación muy simple: Dado que tenemos 26 letras en el alfabeto inglés, cada letra por 26 columnas binarias 1-0. Si la primera letra era una 'j', entonces la columna 10 tendrá un 1 y las otras 25 columnas un cero. Los \textbf{fonemas output}, por otra parte, se codificarán en 18 columnas binarias (ver anexo I).\footnote{Los 50 fonemas se codifican en 18 columnas que representan "articulatory features" que los definen, como por ejemplo si tienen un tono alto, medio o bajo; si el ruido procede de la garganta, del paladar, etc; o si el ruido es con o sin voz.} \\
 
 Por lo tanto, el dataset final de 146934 filas tendrá 26 * 7 columnas binarias representando las 7 letras input; y otras 18 columnas binarias representando el fonema output. A este dataset resultante le aplicaré distintas técnicas de aprendizaje que estudiamos en el curso.
 
 \section{Redes Neuronales}
-El primer paso es repetir los exprimentos que se realizaron usando redes neuronales en \cite{parallel}. Para ello, utilizaré una red neuronal con 26 * 7 neuronas en la capa de entrada, y 18 en la capa de salida. 
+El primer paso fue repetir los exprimentos que se realizaron usando redes neuronales en \cite{parallel}. Para ello, utilizaré una red neuronal con 26 * 7 neuronas en la capa de entrada, y 18 en la capa de salida. 
 
 \begin{figure}[h!]
 \centering
 \includegraphics[width=100mm]{figure1.jpg}
 \end{figure}
-
 
 \subsection{Optimización de parámetros}
 
