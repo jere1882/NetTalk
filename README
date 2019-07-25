@@ -1,6 +1,6 @@
 Final project of Data Mining
 
-This code replicates the experiments realized in NetTalk paper, and extends them to Random Forest, KNN, SVM and Gaussian Processes.
+This code replicates the experiments with ANN described in NetTalk paper, and extends them to Random Forest, KNN, SVM and Gaussian Processes.
 A complete report of the results can be found in Informe/Informe.pdf (in Spanish)
 
 Index of folders and files:
@@ -17,12 +17,8 @@ encodedDs/                     [Encoded NetTalk dataset & code used to generate 
 ann/                           [All code related to neural networks] 
   |-> ann_impl\                
        |-> bp.c                Modified version of the code used in Machine Learning course to train ANNs          
- 
   |-> optimize_parameters.ssh  Train several ANNs to find the best hyperparameters
   |-> ann_best_calculate.ssh   Calculate errors for different configurations (Using optimized hyperparameters)
-
-knn/                           [All code implementing KNN and KNN-syll]
-
 
 rf/                            [All code calculating the errors for RF]
   |-> train_and_predict.R      Train RF and save the predictions
@@ -36,6 +32,9 @@ svm/
 gp/
   |-> train_and_predict.R      Train GPs and save the predictions
   |-> calculate_error.R        Load a file with predictions along with a test file, and calculate the discrete error
+
+knn/                           [All code implementing KNN and KNN-syll]
+
 
 Informe/                       (folder) .tex and resulting .pdf file
 

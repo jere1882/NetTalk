@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=latex 2019.7.14)  24 JUL 2019 18:14
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2019.7.14)  25 JUL 2019 09:07
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -820,7 +820,7 @@ Package: ifvtex 2010/03/01 v1.5 Detect VTeX and its facilities (HO)
 Package ifvtex Info: VTeX not detected.
 Package: intcalc 2007/09/27 v1.1 Expandable calculations with integers (HO)
 Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
-Package ifpdf Info: pdfTeX in PDF mode is not detected.
+Package ifpdf Info: pdfTeX in PDF mode is detected.
 Package: etexcmds 2011/02/16 v1.5 Avoid name clashes with e-TeX commands (HO)
 Package etexcmds Info: Could not find \expanded.
 (etexcmds)             That can mean that you are not using pdfTeX 1.50 or
@@ -833,7 +833,7 @@ Package: pdftexcmds 2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO
 Package pdftexcmds Info: LuaTeX not detected.
 Package pdftexcmds Info: \pdf@primitive is available.
 Package pdftexcmds Info: \pdf@ifprimitive is available.
-Package pdftexcmds Info: \pdfdraftmode is ignored in DVI mode.
+Package pdftexcmds Info: \pdfdraftmode found.
 Package: pdfescape 2011/11/25 v1.13 Implements pdfTeX's escape features (HO)
 Package: bigintcalc 2012/04/08 v1.3 Expandable calculations on big integers (HO
 )
@@ -905,20 +905,12 @@ LaTeX Info: Redefining \pageref on input line 6369.
 \c@Hfootnote=\count109
 )
 
-Package hyperref Message: Driver (default): hdvips.
+Package hyperref Message: Driver (autodetected): hpdftex.
 
-(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hdvips.def
-File: hdvips.def 2012/11/06 v6.83m Hyperref driver for dvips
-
-(/usr/share/texlive/texmf-dist/tex/latex/hyperref/pdfmark.def
-File: pdfmark.def 2012/11/06 v6.83m Hyperref definitions for pdfmark specials
-\pdf@docset=\toks30
-\pdf@box=\box29
-\pdf@toks=\toks31
-\pdf@defaulttoks=\toks32
-\HyField@AnnotCount=\count110
-\Fld@listcount=\count111
-\c@bookmark@seq@number=\count112
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hpdftex.def
+File: hpdftex.def 2012/11/06 v6.83m Hyperref driver for pdfTeX
+\Fld@listcount=\count110
+\c@bookmark@seq@number=\count111
 
 (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/rerunfilecheck.sty
 Package: rerunfilecheck 2011/04/15 v1.7 Rerun checks for auxiliary files (HO)
@@ -926,7 +918,7 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 82.
 )
 \Hy@SectionHShift=\skip54
-))
+)
 (/usr/share/texlive/texmf-dist/tex/latex/sectsty/sectsty.sty
 Package: sectsty 2002/02/25 v2.0.2 Commands to change all sectional heading sty
 les
@@ -943,10 +935,11 @@ Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
 (/usr/share/texlive/texmf-dist/tex/latex/latexconfig/graphics.cfg
 File: graphics.cfg 2010/04/23 v1.9 graphics configuration of TeX Live
 )
-Package graphics Info: Driver file: dvips.def on input line 95.
+Package graphics Info: Driver file: pdftex.def on input line 95.
 
-(/usr/share/texlive/texmf-dist/tex/latex/graphics/dvips.def
-File: dvips.def 2015/12/30 v3.0k Driver-dependent file (DPC,SPQR)
+(/usr/share/texlive/texmf-dist/tex/latex/pdftex-def/pdftex.def
+File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
+\Gread@gobject=\count112
 ))
 \Gin@req@height=\dimen117
 \Gin@req@width=\dimen118
@@ -976,8 +969,9 @@ Package: xcolor 2007/01/21 v2.11 LaTeX color extensions (UK)
 (/usr/share/texlive/texmf-dist/tex/latex/latexconfig/color.cfg
 File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
 )
-Package xcolor Info: Driver file: dvips.def on input line 225.
+Package xcolor Info: Driver file: pdftex.def on input line 225.
 Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1337.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1341.
 Package xcolor Info: Model `RGB' extended on input line 1353.
 Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1355.
 Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1356.
@@ -993,7 +987,7 @@ Style option: `fancyvrb' v2.7a, with DG/SPQR fixes, and firstline=lastline fix
 <2008/02/07> (tvz)
 \FV@CodeLineNo=\count113
 \FV@InFile=\read2
-\FV@TabBox=\box30
+\FV@TabBox=\box29
 \c@FancyVerbLine=\count114
 \FV@StepNumber=\count115
 \FV@OutFile=\write3
@@ -1071,7 +1065,7 @@ LaTeX Font Info:    Try loading font information for T1+futs on input line 55.
 (/usr/share/texlive/texmf-dist/tex/latex/fourier/t1futs.fd
 File: t1futs.fd 2004/03/02 Fontinst v1.926 font definitions for T1/futs.
 )
-\AtBeginShipoutBox=\box31
+\AtBeginShipoutBox=\box30
 Package hyperref Info: Link coloring OFF on input line 55.
 
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
@@ -1090,6 +1084,35 @@ LaTeX Info: Redefining \nameref on input line 55.
 \@outlinefile=\write4
 \openout4 = `informe.out'.
 
+
+(/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count117
+\scratchdimen=\dimen123
+\scratchbox=\box31
+\nofMPsegments=\count118
+\nofMParguments=\count119
+\everyMPshowfont=\toks30
+\MPscratchCnt=\count120
+\MPscratchDim=\dimen124
+\MPnumerator=\count121
+\makeMPintoPDFobject=\count122
+\everyMPtoPDFconversion=\toks31
+) (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
+Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
+
+(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/grfext.sty
+Package: grfext 2010/08/19 v1.1 Manage graphics extensions (HO)
+)
+Package grfext Info: Graphics extension search list:
+(grfext)             [.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPE
+G,.JBIG2,.JB2,.eps]
+(grfext)             \AppendGraphicsExtensions on input line 452.
+
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
 LaTeX Font Info:    Try loading font information for FML+futmi on input line 58
 .
 
@@ -1147,25 +1170,13 @@ Underfull \hbox (badness 10000) in paragraph at lines 66--67
 
  []
 
-
-! LaTeX Error: Cannot determine size of graphic in phonemicChart.jpg (no Boundi
-ngBox).
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.70 ...degraphics[width=120mm]{phonemicChart.jpg}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-File: phonemicChart.jpg Graphic file (type eps)
-<phonemicChart.jpg>
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
+<phonemicChart.jpg, id=53, 706.64pt x 461.725pt>
+File: phonemicChart.jpg Graphic file (type jpg)
+ <use phonemicChart.jpg>
+Package pdftex.def Info: phonemicChart.jpg used on input line 70.
+(pdftex.def)             Requested size: 341.43306pt x 223.09796pt.
 LaTeX Font Info:    Try loading font information for T1+cmtt on input line 75.
+
 (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
@@ -1173,25 +1184,25 @@ Underfull \hbox (badness 10000) in paragraph at lines 75--76
 
  []
 
+[1
 
+
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./phonemicChart.jpg>]
 Underfull \hbox (badness 10000) in paragraph at lines 87--88
 
  []
 
-[1
 
-
-]
 Underfull \hbox (badness 10000) in paragraph at lines 108--109
 
  []
 
-[2]
+
 Underfull \hbox (badness 10000) in paragraph at lines 126--127
 
  []
 
-[3]
+[2]
 Underfull \hbox (badness 10000) in paragraph at lines 158--159
 
  []
@@ -1208,69 +1219,36 @@ Underfull \hbox (badness 10000) in paragraph at lines 162--163
 
  []
 
-[4]
-
-! LaTeX Error: Cannot determine size of graphic in figure1.jpg (no BoundingBox)
-.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.171 \includegraphics[width=100mm]{figure1.jpg}
-                                                
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-File: figure1.jpg Graphic file (type eps)
-<figure1.jpg>
-
-! LaTeX Error: Cannot determine size of graphic in annresults.jpg (no BoundingB
-ox).
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.196 ...ludegraphics[width=112mm]{annresults.jpg}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-File: annresults.jpg Graphic file (type eps)
-<annresults.jpg>
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
+<figure1.jpg, id=75, 411.03563pt x 230.36063pt>
+File: figure1.jpg Graphic file (type jpg)
+ <use figure1.jpg>
+Package pdftex.def Info: figure1.jpg used on input line 171.
+(pdftex.def)             Requested size: 284.52756pt x 159.45866pt.
+ [3]
+<annresults.jpg, id=82, 590.205pt x 585.18625pt>
+File: annresults.jpg Graphic file (type jpg)
+ <use annresults.jpg>
+Package pdftex.def Info: annresults.jpg used on input line 196.
+(pdftex.def)             Requested size: 318.67085pt x 315.96907pt.
 
 Underfull \hbox (badness 10000) in paragraph at lines 199--200
 
  []
 
+[4 <./figure1.jpg> <./annresults.jpg>]
 LaTeX Font Info:    Try loading font information for TS1+futs on input line 204
 .
+
 (/usr/share/texlive/texmf-dist/tex/latex/fourier/ts1futs.fd
 File: ts1futs.fd 2004/03/26 Fontinst v1.926 font definitions for TS1/futs.
-) [5]
+)
+<annresults2.jpg, id=88, 590.205pt x 585.18625pt>
+File: annresults2.jpg Graphic file (type jpg)
+ <use annresults2.jpg>
+Package pdftex.def Info: annresults2.jpg used on input line 212.
+(pdftex.def)             Requested size: 318.67085pt x 315.96907pt.
 
-! LaTeX Error: Cannot determine size of graphic in annresults2.jpg (no Bounding
-Box).
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.212 ...udegraphics[width=112mm]{annresults2.jpg}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-File: annresults2.jpg Graphic file (type eps)
-<annresults2.jpg>
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-
+[5 <./annresults2.jpg>]
 Underfull \hbox (badness 10000) in paragraph at lines 223--224
 
  []
@@ -1280,33 +1258,27 @@ Underfull \hbox (badness 10000) in paragraph at lines 225--226
 
  []
 
-[6]
+
 Underfull \hbox (badness 10000) in paragraph at lines 244--245
 
  []
 
-[7]
+[6]
 Overfull \hbox (7.03735pt too wide) in paragraph at lines 273--274
 []\T1/futs/b/n/10.95 Gaussian Pro-cesses\T1/futs/m/n/10.95 : Si bien no es-tu-d
 i-amos este método en el curso, me pare-ció in-tere-sante incluirlo[[]].
  []
 
-[8]
+<figure.png, id=98, 628.59843pt x 603.75563pt>
+File: figure.png Graphic file (type png)
+ <use figure.png>
+Package pdftex.def Info: figure.png used on input line 289.
+(pdftex.def)             Requested size: 483.69684pt x 464.58005pt.
 
-! LaTeX Error: Cannot determine size of graphic in figure.png (no BoundingBox).
 
+LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.289 \includegraphics[width=170mm]{figure.png}
-                                               
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-File: figure.png Graphic file (type eps)
-<figure.png> [9]
+[7]
 Underfull \hbox (badness 10000) in paragraph at lines 300--301
 
  []
@@ -1321,31 +1293,23 @@ Underfull \hbox (badness 10000) in paragraph at lines 304--305
 
  []
 
-
+[8 <./figure.png (PNG copy)>]
 Underfull \hbox (badness 10000) in paragraph at lines 306--307
 
  []
 
+<variable_importance.jpg, id=110, 590.205pt x 585.18625pt>
+File: variable_importance.jpg Graphic file (type jpg)
 
-! LaTeX Error: Cannot determine size of graphic in variable_importance.jpg (no 
-BoundingBox).
+<use variable_importance.jpg>
+Package pdftex.def Info: variable_importance.jpg used on input line 312.
+(pdftex.def)             Requested size: 284.52756pt x 282.10951pt.
 
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.312 ...ics[width=100mm]{variable_importance.jpg}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-File: variable_importance.jpg Graphic file (type eps)
-<variable_importance.jpg>
 Underfull \hbox (badness 10000) in paragraph at lines 318--319
 
  []
 
-[10]
+
 Underfull \hbox (badness 10000) in paragraph at lines 320--321
 
  []
@@ -1355,7 +1319,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 322--323
 
  []
 
-
+[9 <./variable_importance.jpg>]
 Underfull \hbox (badness 10000) in paragraph at lines 334--335
 
  []
@@ -1375,67 +1339,66 @@ Underfull \hbox (badness 10000) in paragraph at lines 340--341
 
  []
 
-[11]
 
-! LaTeX Error: Cannot determine size of graphic in art_features.jpg (no Boundin
-gBox).
+Underfull \hbox (badness 10000) in paragraph at lines 342--343
 
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.355 ...degraphics[width=100mm]{art_features.jpg}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
+ []
 
-File: art_features.jpg Graphic file (type eps)
-<art_features.jpg>
+[10] <art_features.jpg, id=120, 460.72125pt x 698.61pt>
+File: art_features.jpg Graphic file (type jpg)
+ <use art_features.jpg>
+Package pdftex.def Info: art_features.jpg used on input line 357.
+(pdftex.def)             Requested size: 284.52756pt x 431.4388pt.
 
-! LaTeX Error: Cannot determine size of graphic in art_features2.jpg (no Boundi
-ngBox).
+<art_features2.jpg, id=121, 494.84875pt x 249.93375pt>
+File: art_features2.jpg Graphic file (type jpg)
+ <use art_features2.jpg>
+Package pdftex.def Info: art_features2.jpg used on input line 365.
+(pdftex.def)             Requested size: 284.52756pt x 143.70697pt.
 
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.363 ...egraphics[width=100mm]{art_features2.jpg}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-File: art_features2.jpg Graphic file (type eps)
-<art_features2.jpg>
 
 Class scrartcl Warning: incompatible usage of \@ssect detected.
 (scrartcl)              You've used the KOMA-Script implementation of \@ssect
 (scrartcl)              from within a non compatible caller, that does not
 (scrartcl)              \scr@s@ct@@nn@m@ locally.
 (scrartcl)              This could result in several error messages on input li
-ne 369.
+ne 371.
 
-[12]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 382.
- [13]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 382.
+[11 <./art_features.jpg> <./art_features2.jpg>]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 384.
+ [12]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 384.
  (./informe.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 382.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 382.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 384.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 384.
 Package rerunfilecheck Info: File `informe.out' has not changed.
 (rerunfilecheck)             Checksum: 285A98FC2A4C879A60DC4470424B92D4;779.
 
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 382.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 384.
  ) 
 Here is how much of TeX's memory you used:
- 10824 strings out of 493030
- 156714 string characters out of 6136260
- 408368 words of memory out of 5000000
- 14171 multiletter control sequences out of 15000+600000
- 110343 words of font info for 100 fonts, out of 8000000 for 9000
+ 11405 strings out of 493029
+ 165257 string characters out of 6136234
+ 413323 words of memory out of 5000000
+ 14674 multiletter control sequences out of 15000+600000
+ 117015 words of font info for 131 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,12n,47p,1920b,456s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 41i,11n,47p,703b,462s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}{/usr/share/texmf/
+fonts/enc/dvips/cm-super/cm-super-t1.enc}</usr/share/texlive/texmf-dist/fonts/t
+ype1/public/fourier/fourier-mlit.pfb></usr/share/texlive/texmf-dist/fonts/type1
+/public/fourier/fourier-ms.pfb></usr/share/texlive/texmf-dist/fonts/type1/adobe
+/utopia/putb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/adobe/utopia/putr
+8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/adobe/utopia/putri8a.pfb></us
+r/share/texmf/fonts/type1/public/cm-super/sftt0900.pfb></usr/share/texmf/fonts/
+type1/public/cm-super/sftt1095.pfb>
+Output written on informe.pdf (12 pages, 764119 bytes).
+PDF statistics:
+ 167 PDF objects out of 1000 (max. 8388607)
+ 136 compressed objects within 2 object streams
+ 33 named destinations out of 1000 (max. 500000)
+ 137 words of extra memory for PDF output out of 10000 (max. 10000000)
 
-Output written on informe.dvi (13 pages, 47820 bytes).
