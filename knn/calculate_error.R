@@ -1,7 +1,7 @@
 library(class)
 
 englishAlphabet <- strsplit("abcdefghijklmnopqrstuvwxyz","")[[1]]
-project_path      <-  "~/Desktop/NetTalk/knn" #getwd() 
+project_path      <-  getwd() 
 art_features_path <- paste(project_path,"/../encodedDs/articulatoryFeatures/phonems.csv",sep="") 
 
 center_inputs <- (78+1):(78+26)

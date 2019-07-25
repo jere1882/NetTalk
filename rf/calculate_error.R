@@ -1,6 +1,6 @@
 
 englishAlphabet <- strsplit("abcdefghijklmnopqrstuvwxyz","")[[1]]
-project_path      <- "/home/jeremiasrodriguez/Desktop/NetTalk/rf" #getwd()    
+project_path      <- getwd()    
 art_features_path <- paste(project_path,"/../encodedDs/articulatoryFeatures/phonems.csv",sep="") 
 trainSize <- 5000
 

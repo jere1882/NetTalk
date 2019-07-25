@@ -1,7 +1,7 @@
 library("kernlab")
 
 englishAlphabet <- strsplit("abcdefghijklmnopqrstuvwxyz","")[[1]]
-project_path      <- "~/Desktop/NetTalk/gp" #getwd() 
+project_path      <- getwd() 
 art_features_path <- paste(project_path,"/../encodedDs/articulatoryFeatures/phonems.csv",sep="") 
 
 articulatoryFeatures <- read.table(file=art_features_path, header=FALSE, sep=",")

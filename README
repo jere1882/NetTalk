@@ -1,19 +1,42 @@
-Index of files:
+Final project of Data Mining
 
-rawDataset/                    (folder) [Original NetTalk dataset]
+This code replicates the experiments realized in NetTalk paper, and extends them to Random Forest, KNN, SVM and Gaussian Processes.
+A complete report of the results can be found in Informe/Informe.pdf (in Spanish)
 
-encodedDs/                     (folder) [Encoded NetTalk dataset & code used to generate it]
+Index of folders and files:
+
+rawDataset/                    
+  |-> netTalk.data             Original NetTalk dataset
+  |-> netTalk.names            Documentation of the original dataset
+
+encodedDs/                     [Encoded NetTalk dataset & code used to generate it]
   |-> articulatoryFeatures/    (folder) Tables that store the encoded representation of phonems as articulatory features
-  |-> generate_dataset.R       (script) Preprocess original nettalk dataset, encode it as a matrix of numbers
-  |-> datasets                 (folder) Encoded NetTalk dataset (created using scripts/generate_dataset.R)
+  |-> generate_dataset.R       Preprocess original nettalk dataset, encode it as a matrix of numbers
+  |-> datasets/                (folder) Encoded NetTalk dataset (created using scripts/generate_dataset.R)
 
-ann/                           (folder) All code related to neural networks 
+ann/                           [All code related to neural networks] 
   |-> ann_impl\                
-       |-> bp.c                         Modified version of the code used in Machine Learning course to train ANNs
+       |-> bp.c                Modified version of the code used in Machine Learning course to train ANNs          
+ 
+  |-> optimize_parameters.ssh  Train several ANNs to find the best hyperparameters
+  |-> ann_best_calculate.ssh   Calculate errors for different configurations (Using optimized hyperparameters)
 
-  |-> optimize_parameters.ssh  (script) Train several ANNs to find the best hyperparameters
-  |-> ann_best_calculate.ssh   (script) Calculate errors for different configurations (Using optimized hyperparameters)
-  |-> hyp_estimation_results\  (folder) Results after executing optimize_parameters.ssh
-  |-> final_results\           (folder) Results after executing ann_best_calculate.ssh
+knn/                           [All code implementing KNN and KNN-syll]
 
-Informe/                       (folder) .tex and resulting .pdf files
+
+rf/                            [All code calculating the errors for RF]
+  |-> train_and_predict.R      Train RF and save the predictions
+  |-> calculate_error.R        Load a file with predictions along with a test file, and calculate the discrete error
+  |-> variable_importance.R    Calculate the importance of each input variable
+
+svm/
+  |-> train_optimize_and_predict.R  Optimize SVM hyperparameters, train and predict in test.
+  |-> calculate_error.R             Calculate discrete error of predictions in test dataset
+
+gp/
+  |-> train_and_predict.R      Train GPs and save the predictions
+  |-> calculate_error.R        Load a file with predictions along with a test file, and calculate the discrete error
+
+Informe/                       (folder) .tex and resulting .pdf file
+
+** all scripts must be executed from their own subfolders, otherwise there'll be path issues **

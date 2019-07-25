@@ -1,7 +1,7 @@
 library("kernlab")
 
 englishAlphabet <- strsplit("abcdefghijklmnopqrstuvwxyz","")[[1]]
-project_path      <-  "~/Desktop/NetTalk/svm" #getwd() 
+project_path      <-  getwd() 
 art_features_path <- paste(project_path,"/../encodedDs/articulatoryFeatures/phonems.csv",sep="") 
 
 trainSize<-1000
