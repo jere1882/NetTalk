@@ -1,13 +1,13 @@
 Final project - Data Mining (Elective subject)
 
-This project is replicates and extends experiments carried out in the following paper:
+This project replicates and extends experiments carried out in the following paper:
 
 [NETtalk: a parallel network that learns to read aloud](https://www.semanticscholar.org/paper/NETtalk%3A-a-parallel-network-that-learns-to-read-Sejnowski-Rosenberg/406033f22b6a671b94bcbdfaf63070b7ce6f3e48
 )
 T. Sejnowski, C. Rosenberg
 
-It consists of using several machine learning techniques (Neural Networks, Random Forests, Support Vector Machines, Gaussian Processes and KNN) to attempt to learn the pronounce words in English, given their written representation.
-Even though the experiments carried out on this work try to learn to generate the phonetic sounds of English words, an outstanding advantage of using machine learning rather than a set of fixed rules is that the pronunciation of any language could be learn, provided a reasonable set of examples is provided.
+Several machine learning techniques (Neural Networks, Random Forests, Support Vector Machines, Gaussian Processes and KNN) are used in order to attempt to learn to pronounce words in English, given their written representation.
+Even though the experiments carried out in this work try to learn to generate the phonetic sounds of English words, an outstanding advantage of using machine learning rather than a set of fixed rules is that the pronunciation of any language could be learnt, provided a reasonable set of examples is given.
 
 ![Results](https://i.ibb.co/BKFVKFr/image.png)
 
