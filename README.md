@@ -1,4 +1,4 @@
-Final project - Data Mining (Elective subject)
+#Final project - Data Mining (Elective subject)
 
 This project replicates and extends experiments carried out in the following paper:
 
