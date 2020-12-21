@@ -16,7 +16,7 @@ Approximately 85% of individual sounds (phonems) were predicted correctly in tes
 A complete report can be found in Informe/Informe.pdf (in Spanish)
 
 # Index of folders and files:
-
+```
 rawDataset/                    
   |-> netTalk.data             Original NetTalk dataset
   |-> netTalk.names            Documentation of the original dataset
@@ -47,9 +47,8 @@ gp/
 
 knn/                           [All code implementing KNN and KNN-syll]
 
-
 Informe/                       (folder) .tex and resulting .pdf file
-
+```
 ** all scripts must be executed from their own subfolders **
 
 [1] https://www.google.com/search?q=nettalk+paper&oq=nettalk+paper&aqs=chrome..69i57.2265j0j7&sourceid=chrome&ie=UTF-8
